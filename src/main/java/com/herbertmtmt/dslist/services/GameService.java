@@ -6,6 +6,7 @@ package com.herbertmtmt.dslist.services;
 import com.herbertmtmt.dslist.dto.GameDTO;
 import com.herbertmtmt.dslist.dto.GameMinDTO;
 import com.herbertmtmt.dslist.entities.Game;
+import com.herbertmtmt.dslist.projections.GameMinProjection;
 import com.herbertmtmt.dslist.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,13 @@ public class GameService {
         List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList();
 
         return dto;
+    }
+
+    // feita no gameService pois é uma consulta que retorna games
+    @Transactional(readOnly = true)
+    public List<GameMinDTO> findByList(Long listId) {
+        List<GameMinProjection> result = gameRepository.searchByList(listId);
+        return result.stream().map(x -> new GameMinDTO(x)).toList();
     }
 
 }
